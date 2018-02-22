@@ -6,7 +6,7 @@ public:
 	//Metronome() {};
 	//~Metronome() {};
 
-	void proofOfConcept();
+	void run();
 	void warmupOpenCloseOpen();
 
 private:

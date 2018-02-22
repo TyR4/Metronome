@@ -10,7 +10,7 @@ using namespace std::chrono;
 //using namespace std::chrono_literals; // ns, us, ms, s, h, etc.
 using std::chrono::system_clock;
 
-void Metronome::proofOfConcept() {
+void Metronome::run() {
 	int bpm;
 
 	cout << "Enter speed: ";
