@@ -6,7 +6,7 @@ public:
 	//Metronome() {};
 	//~Metronome() {};
 
-	void run();
+	void run(int bpm);
 	void warmupOpenCloseOpen();
 
 private:
@@ -14,5 +14,6 @@ private:
 	void makeSound(int);
 	void outputBPM(int);
 	void countIn(int);
+	void playNumberOfBeats(int beats, int bpm);
 
 };

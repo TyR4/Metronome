@@ -10,16 +10,9 @@ using namespace std::chrono;
 //using namespace std::chrono_literals; // ns, us, ms, s, h, etc.
 using std::chrono::system_clock;
 
-void Metronome::run() {
-	int bpm;
-
-	cout << "Enter speed: ";
-	cin >> bpm;
-
-	countIn(bpm);
-
+void Metronome::run(int bpm) {
 	outputBPM(bpm);
-	for (int i = 0; i < 5; ++i)
+	while(1)
 		makeSound(bpm);
 }
 
@@ -30,14 +23,12 @@ void Metronome::warmupOpenCloseOpen() {
 
 	for (int i = start; i <= end; i += 10) {
 		outputBPM(i);
-		for (int j = 0; j < 4; ++j)
-			makeSound(i);
+		playNumberOfBeats(4, i);
 	}
 
 	for (int i = end; i >= start; i -= 10) {
 		outputBPM(i);
-		for (int j = 0; j < 4; ++j)
-			makeSound(i);
+		playNumberOfBeats(4, i);
 	}
 }
 
@@ -61,7 +52,11 @@ void Metronome::outputBPM(int bpm) {
 
 void Metronome::countIn(int bpm) {
 	int beats = bpm < 120 ? 4 : 8; // one bar or two bar count in
+	playNumberOfBeats(beats, bpm);
+}
 
-	for (int i = 0; i < beats; ++i)
+// this is purely a utility function, to be used when one or two bars are needed
+void Metronome::playNumberOfBeats(int beats, int bpm) {
+	for (int j = 0; j < beats; ++j)
 		makeSound(bpm);
 }
