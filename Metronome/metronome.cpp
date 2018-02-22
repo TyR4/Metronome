@@ -16,12 +16,17 @@ void Metronome::proofOfConcept() {
 	cout << "Enter speed: ";
 	cin >> bpm;
 
+	countIn(bpm);
+
+	outputBPM(bpm);
 	for (int i = 0; i < 5; ++i)
 		makeSound(bpm);
 }
 
 void Metronome::warmupOpenCloseOpen() {
 	int start = 60, end = 200;
+
+	countIn(start);
 
 	for (int i = start; i <= end; i += 10) {
 		outputBPM(i);
@@ -52,4 +57,11 @@ void Metronome::makeSound(int bpm) {
 
 void Metronome::outputBPM(int bpm) {
 	cout << bpm << endl;
+}
+
+void Metronome::countIn(int bpm) {
+	int beats = bpm < 120 ? 4 : 8; // one bar or two bar count in
+
+	for (int i = 0; i < beats; ++i)
+		makeSound(bpm);
 }
