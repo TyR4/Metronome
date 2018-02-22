@@ -1,1 +1,2 @@
 - remove all i/o functions out of metronome class
+- run metronome loops in threads so tempo can change on the fly
