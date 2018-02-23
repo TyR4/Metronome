@@ -5,13 +5,11 @@
 #include "metronome.h"
 
 using namespace std;
-using namespace std::this_thread;     // sleep_for, sleep_until
-using namespace std::chrono;
-//using namespace std::chrono_literals; // ns, us, ms, s, h, etc.
-using std::chrono::system_clock;
+using std::this_thread::sleep_for;     // sleep_for, sleep_until
+using std::chrono::milliseconds;
 
 void Metronome::run(int bpm) {
-	outputBPM(bpm);
+	displayBPM(bpm);
 	while(1)
 		makeSound(bpm);
 }
@@ -22,12 +20,12 @@ void Metronome::warmupOpenCloseOpen() {
 	countIn(start);
 
 	for (int i = start; i <= end; i += 10) {
-		outputBPM(i);
+		displayBPM(i);
 		playNumberOfBeats(4, i);
 	}
 
 	for (int i = end; i >= start; i -= 10) {
-		outputBPM(i);
+		displayBPM(i);
 		playNumberOfBeats(4, i);
 	}
 }
@@ -46,7 +44,7 @@ void Metronome::makeSound(int bpm) {
 	sleep_for(milliseconds(mili - soundLength));
 }
 
-void Metronome::outputBPM(int bpm) {
+void Metronome::displayBPM(int bpm) {
 	cout << bpm << endl;
 }
 

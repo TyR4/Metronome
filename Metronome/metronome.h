@@ -12,7 +12,7 @@ public:
 private:
 
 	void makeSound(int);
-	void outputBPM(int);
+	void displayBPM(int);
 	void countIn(int);
 	void playNumberOfBeats(int beats, int bpm);
 
