@@ -1,14 +1,16 @@
-#include <iostream>
 #include <chrono>
-#include <thread>
+#include <functional>
+#include <iostream>
 #include <mutex>
+#include <string>
+#include <thread>
 #include <conio.h>
 #include <Windows.h>
 #include "metronome.h"
 
 using namespace std;
-using std::this_thread::sleep_for;     // sleep_for, sleep_until
-using std::chrono::milliseconds;
+using this_thread::sleep_for;     // sleep_for, sleep_until
+using chrono::milliseconds;
 
 Metronome::Metronome() : bpm(60) {}
 
@@ -54,23 +56,34 @@ void Metronome::warmupOpenCloseOpen() {
 
 void Metronome::userInputHandler() {
 	char input;
+	string bpmBuffer = "000";
+	int bufferIdx = 0;
 	while ((input = _getch()) != 27) {
 		if (input == 0 || input == -32)
 			input = _getch();
-		processInput(input);
+		processInput(input, ref(bpmBuffer), &bufferIdx);
 	}
 	exit(0);
 }
 
-void Metronome::processInput(int input) {
+void Metronome::processInput(int input, string & bpmBuffer, int* bufferIdx) {
+	cout << "Buffer: " << bpmBuffer << endl;
+	cout << "Index: " << *bufferIdx << ", buffer value: " << bpmBuffer[*bufferIdx] << endl;
 	lock_guard<mutex> guard(bpmMutex);
-	int inputBuffer[3];
 	if (input == 32) // SPACE
 		cout << "Pause" << endl;
-	else if (input > 47 && input < 58)
-		cout << "Entering a new BPM, add to buffer\n";
-	else if (input == 13) // ENTER
-		cout << "Current buffer is the new BPM: " << *inputBuffer << endl;
+	else if (input > 47 && input < 58) {
+		bpmBuffer[(*bufferIdx)++] = (char)input;
+		if (*bufferIdx >= 3) {
+			*bufferIdx = 0;
+			setBPMFromBuffer(bpmBuffer);
+			bpmBuffer = "000";
+		}
+	}
+	else if (input == 13) { // ENTER
+		cout << "Current buffer is the new BPM: " << bpmBuffer << endl;
+		setBPMFromBuffer(bpmBuffer);
+	}
 	else if (input == 72) { // UP Arrow 
 		if (getCurrentBPM() < 240) {
 			setBPM(getCurrentBPM() + 1);
@@ -97,6 +110,15 @@ void Metronome::processInput(int input) {
 	}
 	else
 		cout << "Invalid Character" << endl;
+}
+
+void Metronome::setBPMFromBuffer(string bpmBuffer) {
+	int newBPM = stoi(bpmBuffer);
+	if (newBPM < 60)
+		newBPM = 60;
+	else if (newBPM > 240)
+		newBPM = 240;
+	setBPM(newBPM);
 }
 
 void Metronome::makeSound() const {

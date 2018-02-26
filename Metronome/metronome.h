@@ -1,5 +1,6 @@
 #pragma once
 #include <mutex>
+#include <string>
 
 class Metronome
 {
@@ -19,7 +20,8 @@ private:
 	std::mutex bpmMutex;
 
 	void userInputHandler();
-	void processInput(int);
+	void processInput(int, std::string&, int*);
+	void setBPMFromBuffer(std::string);
 	void makeSound() const;
 	void displayBPM() const;
 	void countIn() const;
